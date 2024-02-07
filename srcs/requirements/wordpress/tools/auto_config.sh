@@ -17,7 +17,7 @@ chmod +x /usr/local/bin/wp
 # Install WordPress using wp-cli && change info
 wp core download --allow-root
 sed -i -r "s/mdb42/$SQL_DATABASE/1" wp-config.php
-sed -i -r "s/lnaidu/$SQL_USER/1" wp-config.php
+sed -i -r "s/dnieto-r/$SQL_USER/1" wp-config.php
 sed -i -r "s/passwd/$SQL_PASSWORD/1" wp-config.php
 
 # Check if the directory /run/php doesn't exist, then create it

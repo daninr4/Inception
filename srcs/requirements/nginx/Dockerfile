@@ -9,7 +9,7 @@ RUN		apt install vim -y && apt install curl -y
 RUN		mkdir -p /etc/nginx/ssl && mkdir -p /var/run/nginx
 
 # Generate TSL certificate
-RUN		openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/nginx/ssl/inception.key -subj "/C=FR/ST=PACA/L=NICE/O=42/OU=42/CN=lnaidu.42.fr/UID=lnaidu"
+RUN		openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/nginx/ssl/inception.key -subj "/C=FR/ST=PACA/L=NICE/O=42/OU=42/CN=dnieto-r.42.fr/UID=dnieto-r"
 
 # Create && Attribute rights to nginx's html configuration folder
 RUN		mkdir -p /var/www/html					

@@ -5,7 +5,7 @@
 define( 'DB_NAME', 'mdb42');
 
 /** Utilisateur de la base de données MySQL. */
-define( 'DB_USER', 'lnaidu' );
+define( 'DB_USER', 'dnieto-r' );
 
 /** Mot de passe de la base de données MySQL. */
 define( 'DB_PASSWORD', 'passwd' );
