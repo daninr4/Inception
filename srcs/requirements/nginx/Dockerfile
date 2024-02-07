@@ -1,20 +1,26 @@
-FROM alpine:3.17
+# Install debian buster
+FROM	debian:buster
 
-LABEL "author"="dnieto-r"
+# Install all nginx and openssl package
+RUN		apt -y update && apt install nginx -y && apt install openssl -y
+RUN		apt install vim -y && apt install curl -y
 
-# Install OpenSSL and NGINX
-RUN apk update && apk upgrade && apk add --no-cache openssl nginx
+# Create nginx's configuration folder for connection security
+RUN		mkdir -p /etc/nginx/ssl && mkdir -p /var/run/nginx
 
-# SSL Certificate
-RUN mkdir /etc/nginx/ssl
-RUN openssl req -x509 -days 365 -newkey rsa:4096 -nodes \
-    -out /etc/nginx/ssl/nginx_selfsigned.crt \
-    -keyout /etc/nginx/ssl/nginx_selfsigned.key \
-    -subj "/C=ES/ST=Madrid/O=42Born2Code/CN=dnieto-r.42.fr"
+# Generate TSL certificate
+RUN		openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/nginx/ssl/inception.key -subj "/C=FR/ST=PACA/L=NICE/O=42/OU=42/CN=lnaidu.42.fr/UID=lnaidu"
 
-# Copy NGINX configuration file
-RUN mkdir -p /run/nginx
-COPY conf/nginx.conf /etc/nginx/http.d/default.conf
+# Create && Attribute rights to nginx's html configuration folder
+RUN		mkdir -p /var/www/html					
+RUN		chmod 777 /var/www/html
+RUN		chown -R www-data:www-data /var/www/html
 
-# Start NGINX
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+# Copy nginx's configuration file
+COPY	/conf/nginx.conf /etc/nginx/nginx.conf
+
+# listenning port
+EXPOSE	443
+
+# Run nginx
+CMD		[ "nginx", "-g", "daemon off;" ]

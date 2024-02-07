@@ -1,50 +1,34 @@
-FROM alpine:3.17
+# Install alpine:3.16
+FROM alpine:3.16
 
-LABEL "author"="dnieto-r"
+# Install php and curl to download wordpress
+RUN apk update && apk upgrade && apk add curl
+RUN apk add php8 \
+            php8-mysqli \
+            php8-fpm \
+            php8-opcache \
+            php8-json \
+            php8-phar \
+            php8-xml \
+            php8-mbstring \
+            php8-session \
+            php8-openssl \
+            php8-curl \
+            mariadb-client
 
-# Environment
-ENV PHP_VERSION=php81
-ENV DOMAIN_NAME=dnieto-r.42.fr
+# Create configuration folder
+RUN mkdir -p /var/www 
+RUN mkdir -p var/www/html
+RUN chown -R root:root /var/www/html
 
-# Install prerequisites for Wordpress + PHP
-RUN apk update && apk upgrade && apk add --no-cache \
-	wget \
-	tar \
-	mariadb-client \
-	php \
-	php-fpm \
-	php-mysqli \
-	php-json \
-	php-curl \
-	php-dom \
-	php-exif \
-	php-fileinfo \
-	php-mbstring \
-	php-openssl \
-	php-xml \
-	php-phar \
-	php-iconv \
-	php-session \ 
-	php-tokenizer \
-	php-zip 
-	
+# Copy configuration files and give rights
+COPY /conf/wp-config.php /
+COPY /conf/www.conf /
+COPY /tools/auto_config.sh /
+RUN chmod +x /auto_config.sh
 
-# Copy the php.conf file and modify php.ini
-COPY conf/php.conf /etc/$PHP_VERSION/php-fpm.d/www.conf
-RUN echo "clear_env=no" >> /etc/$PHP_VERSION/php.ini
-RUN echo "listen=wordpress:9000" >> /etc/$PHP_VERSION/php.ini
+# listenning port
+EXPOSE 9000
 
-WORKDIR /var/www/$DOMAIN_NAME
-
-# Installing Wordpress CLI
-RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-RUN chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
-
-#Give ownership to www-data user
-#RUN chown -R 33:33 /var/www/* && chmod -R 755 /var/www/*
-
-# Copy the script
-COPY /tools/entrypoint.sh /tmp/entrypoint.sh
-
-# Start from the entrypoint file
-ENTRYPOINT [ "sh", "/tmp/entrypoint.sh" ]
+# Run from the script
+ENTRYPOINT ["/auto_config.sh"]
