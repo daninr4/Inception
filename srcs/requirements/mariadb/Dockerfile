@@ -1,0 +1,9 @@
+FROM alpine:3.17
+
+LABEL "author"="dnieto-r"
+
+RUN apk update && apk upgrade && apk add --no-cache mariadb mariadb-client
+
+COPY ./tools/entrypoint.sh /tmp/entrypoint.sh
+
+ENTRYPOINT ["sh", "/tmp/entrypoint.sh"]
