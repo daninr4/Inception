@@ -19,20 +19,20 @@ sudo apt-get install docker-compose docker-compose-plugin -y
 sudo apt-get update
 sudo rm -rf /var/lib/apt/lists/*
 
-if [ -d "/home/$USER/data" ]; then \
-	echo "/home/$USER/data already exists"; else \
-	mkdir /home/$USER/data; \
+if [ -d "/home/$USER/Desktop/data" ]; then \
+	echo "/home/$USER/Desktop/data already exists"; else \
+	mkdir /home/$USER/Desktop/data; \
 	echo "data directory created successfully"; \
 fi
 
-if [ -d "/home/$USER/data/wordpress" ]; then \
-	echo "/home/$USER/data/wordpress already exists"; else \
-	mkdir /home/$USER/data/wordpress; \
+if [ -d "/home/$USER/Desktop/data/wordpress" ]; then \
+	echo "/home/$USER/Desktop/data/wordpress already exists"; else \
+	mkdir /home/$USER/Desktop/data/wordpress; \
 	echo "wordpress directory created successfully"; \
 fi
 
-if [ -d "/home/$USER/data/mariadb" ]; then \
-	echo "/home/$USER/data/mariadb already exists"; else \
-	mkdir /home/$USER/data/mariadb; \
+if [ -d "/home/$USER/Desktop/data/mariadb" ]; then \
+	echo "/home/$USER/Desktop/data/mariadb already exists"; else \
+	mkdir /home/$USER/Desktop/data/mariadb; \
 	echo "mariadb directory created successfully"; \
 fi
